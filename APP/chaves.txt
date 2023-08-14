@@ -1,2 +1,6 @@
 export AKIASAH4DMGEGVQJDM54
 export AWS_SECRET_ACCESS_KEY='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'
+
+chanve azure
+
+7c754b7ab1c94a64baae701ad7ba2f3a
