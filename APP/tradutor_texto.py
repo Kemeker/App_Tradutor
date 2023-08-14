@@ -1,6 +1,25 @@
+import tkinter as tk
+from tkinter import ttk
 import requests
 import uuid
 import json
+
+def translate_text():
+    text_to_translate = input_text.get("1.0", "end-1c")
+    
+    if not text_to_translate:
+        result_text.config(text="Nenhum texto inserido.")
+        return
+    
+    body = [{
+        'text': text_to_translate
+    }]
+    
+    request = requests.post(constructed_url, params=params, headers=headers, json=body)
+    response = request.json()
+    
+    translated_text = response[0]['translations'][0]['text']
+    result_text.config(text=translated_text)
 
 key = "7c754b7ab1c94a64baae701ad7ba2f3a"
 endpoint = "https://api.cognitive.microsofttranslator.com/"
@@ -22,18 +41,20 @@ headers = {
     'X-ClientTraceId': str(uuid.uuid4())
 }
 
-# Solicita ao usuário que insira o texto a ser traduzido
-text_to_translate = input("Digite o texto que deseja traduzir: ")
+app = tk.Tk()
+app.title("Tradutor")
 
-# Verifica se o usuário inseriu algum texto
-if not text_to_translate:
-    print("Nenhum texto inserido. Encerrando...")
-else:
-    body = [{
-        'text': text_to_translate
-    }]
+input_label = ttk.Label(app, text="Digite o texto que deseja traduzir:")
+input_label.pack(pady=10)
 
-    request = requests.post(constructed_url, params=params, headers=headers, json=body)
-    response = request.json()
+input_text = tk.Text(app, height=5, width=40)
+input_text.pack()
 
-    print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
+translate_button = ttk.Button(app, text="Traduzir", command=translate_text)
+translate_button.pack(pady=10)
+
+result_text = ttk.Label(app, text="")
+result_text.pack()
+
+app.mainloop()
+
