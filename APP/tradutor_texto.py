@@ -1,11 +1,9 @@
-import requests, uuid, json
+import requests
+import uuid
+import json
 
-# Add your key and endpoint
 key = "7c754b7ab1c94a64baae701ad7ba2f3a"
 endpoint = "https://api.cognitive.microsofttranslator.com/"
-
-# location, also known as region.
-# required if you're using a multi-service or regional (not global) resource. It can be found in the Azure portal on the Keys and Endpoint page.
 location = "southcentralus"
 
 path = '/translate'
@@ -19,18 +17,23 @@ params = {
 
 headers = {
     'Ocp-Apim-Subscription-Key': key,
-    # location required if you're using a multi-service or regional (not global) resource.
     'Ocp-Apim-Subscription-Region': location,
     'Content-type': 'application/json',
     'X-ClientTraceId': str(uuid.uuid4())
 }
 
-# You can pass more than one object in body.
-body = [{
-    'text': 'I would really like to drive your car around the block a few times!'
-}]
+# Solicita ao usuário que insira o texto a ser traduzido
+text_to_translate = input("Digite o texto que deseja traduzir: ")
 
-request = requests.post(constructed_url, params=params, headers=headers, json=body)
-response = request.json()
+# Verifica se o usuário inseriu algum texto
+if not text_to_translate:
+    print("Nenhum texto inserido. Encerrando...")
+else:
+    body = [{
+        'text': text_to_translate
+    }]
 
-print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
+    request = requests.post(constructed_url, params=params, headers=headers, json=body)
+    response = request.json()
+
+    print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
