@@ -19,7 +19,9 @@ def translate_text():
     response = request.json()
     
     translated_text = response[0]['translations'][0]['text']
-    result_text.config(text=translated_text)
+    target_language = response[0]['translations'][0]['to']
+    
+    result_text.config(text=f"Tradução: {translated_text}\nLíngua: {target_language}")
 
 key = "7c754b7ab1c94a64baae701ad7ba2f3a"
 endpoint = "https://api.cognitive.microsofttranslator.com/"
